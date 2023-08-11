@@ -289,6 +289,7 @@ func genServerConfig(cfg *Config, cfgLogger btclog.Logger,
 			UniverseForest: uniForest,
 			FederationDB:   federationDB,
 		},
+		Prometheus: cfg.Prometheus,
 	}, nil
 }
 
