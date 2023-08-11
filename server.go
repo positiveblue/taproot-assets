@@ -11,6 +11,7 @@ import (
 	proxy "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/lightninglabs/lndclient"
 	"github.com/lightninglabs/taproot-assets/fn"
+	"github.com/lightninglabs/taproot-assets/monitoring"
 	"github.com/lightninglabs/taproot-assets/perms"
 	"github.com/lightninglabs/taproot-assets/rpcperms"
 	"github.com/lightninglabs/taproot-assets/taprpc"
@@ -290,6 +291,16 @@ func (s *Server) RunUntilShutdown(mainErrChan <-chan error) error {
 
 	// We transition the server state to Active, as the server is up.
 	interceptorChain.SetServerActive()
+
+	// If Prometheus monitoring is enabled, start the Prometheus exporter.
+	if s.cfg.Prometheus.Enabled() {
+		err := monitoring.ExportPrometheusMetrics(
+			grpcServer, s.cfg.Prometheus,
+		)
+		if err != nil {
+			return err
+		}
+	}
 
 	srvrLog.Infof("Taproot Asset Daemon fully active!")
 
