@@ -1,5 +1,6 @@
-DEV_TAGS = dev
+DEV_TAGS = dev $(MONITORING_TAGS)
 RPC_TAGS = autopilotrpc chainrpc invoicesrpc peersrpc routerrpc signrpc verrpc walletrpc watchtowerrpc wtclientrpc
+MONITORING_TAGS = monitoring
 LOG_TAGS =
 TEST_FLAGS =
 ITEST_FLAGS = -logoutput
@@ -8,7 +9,7 @@ POSTGRES_START_DELAY = 5
 
 # If rpc option is set also add all extra RPC tags to DEV_TAGS
 ifneq ($(with-rpc),)
-DEV_TAGS += $(RPC_TAGS)
+DEV_TAGS += $(RPC_TAGS) $(MONITORING_TAGS)
 endif
 
 # If specific package is being unit tested, construct the full name of the
